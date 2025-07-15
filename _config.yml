@@ -1,0 +1,7 @@
+# _config.yml
+theme: jekyll-theme-minimal  # Стандартная тема GitHub
+title: "Инструкция по nginx"  
+description: "Безопасная установка и настройка на macOS"
+markdown: kramdown          # Расширенный Markdown
+plugins:
+  - jekyll-seo-tag         # Автоматические SEO-теги
