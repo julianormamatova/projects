@@ -8,4 +8,4 @@
 
 - **docker-guide:** Установка и настройка Docker для раздачи локального веб-контента на macOS.
 
-- **Генерация статических сайтов (reStructuredText + Sphinx):** Сборка статических веб-сайтов с использованием reStructuredText и системы документации Sphinx.
+- **static-site-generation-rst-sphinx:** Сборка статических веб-сайтов с использованием reStructuredText и системы документации Sphinx.

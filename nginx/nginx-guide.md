@@ -140,9 +140,9 @@ sudo code /opt/homebrew/etc/nginx/nginx.conf
 
 4. Внутри блока `server {`  отредактировать строки:
 
-   - `listen` —  `8080` → `80` (указывает nginx слушать входящие соединения на стандартном порту 80 для HTTP).
+- `listen` —  `8080` → `80` (указывает nginx слушать входящие соединения на стандартном порту 80 для HTTP).
 
-   - `root` —  `html` → `/User/username/Desktop/mywebsite` (указывает корневую директорию веб-страницы, где nginx будет искать файлы).
+- `root` —  `html` → `/User/username/Desktop/mywebsite` (указывает корневую директорию веб-страницы, где nginx будет искать файлы).
 
 ![Настройка_виртуального_хоста](images/nginx-configuration-file-example.png)
 
