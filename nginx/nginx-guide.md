@@ -42,7 +42,8 @@
 
 Для установки **Homebrew**:
 
-1. Открыть **Терминал** и вставить команду c официального сайта [brew.sh](https://brew.sh/ru/):
+1. Открыть **Терминал** и вставить команду c официального сайта [brew.sh](https://brew.sh/ru/)
+
 ```
 /bin/bash -c "$(curl -fsSL https://raw.githubusercontent.com/Homebrew/install/HEAD/install.sh)"
 ```
@@ -55,6 +56,7 @@
 3. Нажать **Return** и дождаться завершения установки (может занять несколько минут). Появится строка **Installation successful**!
 
 4. Убедиться в корректности установки через команду проверки версии:
+
 ```
 brew --version
 ```
@@ -66,6 +68,7 @@ brew --version
 Чтобы установить **nginx** с помощью **Homebrew**:
 
 1. Открыть **Терминал** и ввести команду:
+
 ```
 brew install nginx
 ```
@@ -73,16 +76,19 @@ brew install nginx
 2. Дождаться завершения. **Homebrew** автоматически установит все зависимости.
 
 3. Запустить сервер:
+
 ```
 brew services start nginx
 ```
 
 4. Проверить статус (должно быть `started`):
+
 ```
 brew services list
 ```
 
-5. Для проверки работоспособности перейти по адресу в браузере — http://localhost:8080/:
+5. Для проверки работоспособности перейти по адресу в браузере — http://localhost:8080/
+
 ![Проверка_работоспособности_nginx](images/default-nginx-welcome-page.png)
 *Рисунок 1. Проверка работоспособности nginx*
 
@@ -99,6 +105,7 @@ brew services list
 ## 3.2. Поиск конфигурационного файла
 
 Чтобы найти точный путь к конфигурационному файлу **nginx**, выполнить команду:
+
 ```
 brew info nginx
 ```
@@ -112,6 +119,7 @@ brew info nginx
 Чтобы указать **nginx**, где искать файлы для сайта:
 
 1. Убедиться, что есть права на редактирование конфигурации проверкой пользователя:
+
 ```
 whoami
 ```
@@ -120,6 +128,7 @@ whoami
 > Порт 80 требует прав `sudo`.
 
 2. Открыть конфигурационный файл с помощью текстового редактора (например, **VS Code**):
+
 ```
 sudo code /opt/homebrew/etc/nginx/nginx.conf
 ```
@@ -127,15 +136,19 @@ sudo code /opt/homebrew/etc/nginx/nginx.conf
 3. После ввода пароля откроется файл для редактирования.
 
 4. Внутри блока `server {`  отредактировать строки:
+
    - `listen` —  `8080` → `80` (указывает nginx слушать входящие соединения на стандартном порту 80 для HTTP).
    - `root` —  `html` → `/User/username/Desktop/mywebsite` (указывает корневую директорию веб-страницы, где nginx будет искать файлы).
+
 ![Настройка_виртуального_хоста](images/nginx-configuration-file-example.png)
 *Рисунок 2. Настройка виртуального хоста*
 
 5. Проверить синтаксис конфигурационного файла **nginx.conf** командой:
+
 ```
 sudo nginx -t
 ```
+
 ![Проверка_синтаксиса_nginx](images/nginx-configuration-test-successful.png)
 *Рисунок 3. Проверка синтаксиса nginx.conf*
 
@@ -146,6 +159,7 @@ sudo nginx -t
 1. Открыть текстовый редактор и создать новый файл.
 
 2. Вставить базовый HTML-код в содержимое файла:
+
 ```
 <!DOCTYPE html>
 <html>
@@ -167,7 +181,8 @@ sudo nginx -t
 # 5. Просмотр веб-страницы
 
 Для просмотра веб-страницы:
-1. Открыть браузер и перейти по адресу — http://localhost:
+1. Открыть браузер и перейти по адресу — http://localhost
+
 ![Успешный_просмотр_страницы_в_браузере](images/default-nginx-webpage-in-browser.png)
 *Рисунок 4. Успешный просмотр веб-страницы в браузере*
 
@@ -183,11 +198,13 @@ sudo nginx -t
 **Решение**:
 
 1. Проверить статус **nginx**:
+
 ```
 brew services list
 ```
 
 2. Если статус не `started`, выполнить:
+
 ```
 brew services restart nginx
 ```
@@ -202,11 +219,13 @@ brew services restart nginx
 **Решение**:
 
 1. Проверить синтаксис командой:
+
 ```
 sudo nginx -t
 ```
 
 2. Если ошибка указывает на строку (например, `line 25`), открыть конфиг:
+
 ```
 sudo code /opt/homebrew/etc/nginx/nginx.conf
 ```
@@ -216,6 +235,7 @@ sudo code /opt/homebrew/etc/nginx/nginx.conf
 4. Проверить корректность пути (например, `/Users/username/Desktop/mywebsite`).
 
 5. Восстановить рабочую версию конфига из резервной копии:
+
 ```
 sudo cp /opt/homebrew/etc/nginx/nginx.conf.backup /opt/homebrew/etc/nginx/nginx.conf
 ```
