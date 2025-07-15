@@ -4,8 +4,8 @@
 
 ## Содержание:
 
-- **Локальный веб-сервер nginx:** Установка и настройка nginx для раздачи локального веб-контента с помощью Homebrew на macOS.
+- [nginx-guide](https://julianormamatova.github.io/projects/nginx/nginx-guide.html): Установка и настройка веб-сервера nginx для раздачи локального веб-контента с помощью Homebrew на macOS.
 
-- **nginx в Docker:** Запуск nginx в Docker-контейнере.
+- **docker-guide:** Установка и настройка Docker для раздачи локального веб-контента на macOS.
 
 - **Генерация статических сайтов (reStructuredText + Sphinx):** Сборка статических веб-сайтов с использованием reStructuredText и системы документации Sphinx.
