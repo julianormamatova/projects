@@ -4,7 +4,7 @@
 
 ## Содержание
 
-- [nginx-guide](https://julianormamatova.github.io/projects/nginx/nginx-guide.html): установка и настройка nginx на macOS с Homebrew (для локального тестирования).
+- [nginx-guide](https://julianormamatova.github.io/projects/nginx/nginx-guide.md): установка и настройка nginx на macOS с Homebrew (для локального тестирования).
 
 - **docker-guide:** установка и настройка Docker для раздачи локального веб-контента на macOS.
 
