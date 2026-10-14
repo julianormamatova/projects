@@ -1,0 +1,308 @@
+<!DOCTYPE html>
+<html lang="ru">
+  <head>
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>nginx-guide: установка и настройка nginx на macOS с Homebrew</title>
+    <style>
+      :root {
+        --primary: #24292e;
+        --accent: #0366d6;
+        --bg: #ffffff;
+        --code-bg: #f6f8fa;
+        --border: #e1e4e8;
+        --note-bg: #fff5b1;
+        --note-border: #d1b400;
+        --warn-bg: #ffebee;
+        --warn-border: #d32f2f;
+        --important-bg: #e3f2fd;
+        --important-border: #2196f3;
+      }
+
+      body {
+        font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, Helvetica, Arial, sans-serif;
+        color: var(--primary);
+        background-color: var(--bg);
+        line-height: 1.7;
+        margin: 0;
+        padding: 20px;
+      }
+
+      .container {
+        max-width: 900px;
+        margin: 0 auto;
+      }
+
+      h1 { font-size: 2.2rem; margin-top: 0; margin-bottom: 1rem; color: var(--primary); }
+      h2 { font-size: 1.7rem; margin-top: 2.5rem; border-bottom: 1px solid var(--border); padding-bottom: 0.4rem; }
+      h3 { font-size: 1.3rem; margin-top: 2rem; }
+
+      p { margin-bottom: 1rem; }
+      ul, ol { margin-bottom: 1rem; padding-left: 1.5rem; }
+      li { margin-bottom: 0.4rem; }
+
+      img {
+        max-width: 100%;
+        height: auto;
+        display: block;
+        margin: 20px 0;
+        border-radius: 6px;
+      }
+
+      figcaption {
+        font-size: 0.9rem;
+        color: #6a737d;
+        text-align: center;
+        margin-top: 6px;
+      }
+
+      pre {
+        background: var(--code-bg);
+        padding: 14px;
+        border-radius: 6px;
+        overflow-x: auto;
+        margin: 16px 0;
+        border: 1px solid var(--border);
+      }
+
+      code {
+        font-family: SFMono-Regular, Consolas, Menlo, monospace;
+        font-size: 0.92rem;
+      }
+
+      pre code {
+        font-size: 0.9rem;
+        white-space: pre-wrap;
+      }
+
+      table {
+        width: 100%;
+        border-collapse: collapse;
+        margin: 16px 0;
+      }
+
+      th, td {
+        border: 1px solid var(--border);
+        padding: 10px 12px;
+        text-align: left;
+      }
+
+      th { background-color: #f6f8fa; }
+
+      /* Блоки примечаний и предупреждений */
+      .callout-box {
+        padding: 16px;
+        border-radius: 6px;
+        margin: 16px 0;
+        border-left: 4px solid;
+      }
+
+      .note-box {
+        background-color: var(--note-bg);
+        border-color: var(--note-border);
+        color: #594b00;
+      }
+
+      .warning-box {
+        background-color: var(--warn-bg);
+        border-color: var(--warn-border);
+        color: #7b1515;
+      }
+
+      .important-box {
+        background-color: var(--important-bg);
+        border-color: var(--important-border);
+        color: #1565c0;
+      }
+
+      a { color: var(--accent); text-decoration: none; }
+      a:hover { text-decoration: underline; }
+
+      footer {
+        margin-top: 4rem;
+        font-size: 0.85rem;
+        color: #6a737d;
+        border-top: 1px solid var(--border);
+        padding-top: 16px;
+      }
+    </style>
+  </head>
+  <body>
+    <div class="container">
+      <h1>nginx-guide: установка и настройка nginx на macOS с Homebrew (для локального тестирования)</h1>
+
+      <main>
+        <h2>Содержание (Table of Contents)</h2>
+        <ul>
+          <li><a href="#аннотация">Аннотация</a></li>
+          <li><a href="#предварительные-требования">Предварительные требования</a></li>
+          <li><a href="#системные-требования">Системные требования</a></li>
+          <li><a href="#полезные-команды">Полезные команды</a></li>
+          <li><a href="#1-подготовка-системы-и-установка-homebrew">1. Подготовка системы и установка Homebrew</a></li>
+          <li><a href="#2-установка-и-запуск-nginx">2. Установка и запуск nginx</a></li>
+          <li><a href="#3-настройка-nginx">3. Настройка nginx</a></li>
+          <li><a href="#4-создание-html-файла">4. Создание HTML-файла</a></li>
+          <li><a href="#5-просмотр-веб-страницы">5. Просмотр веб-страницы</a></li>
+          <li><a href="#устранение-неполадок-troubleshooting">Устранение неполадок (Troubleshooting)</a></li>
+        </ul>
+
+        <h2 id="аннотация">Аннотация</h2>
+        <p>Инструкция описывает безопасную установку и настройку веб-сервера <strong>nginx</strong> и запуска на нем веб-страницы с помощью менеджера пакетов <strong>Homebrew</strong> на системе <strong>macOS 13.3</strong> (Ventura) для локального тестирования. Инструкция предназначена для начинающих пользователей, которые изучают веб-технологии и хотят ознакомиться с <strong>nginx</strong>.</p>
+        <p><strong>nginx</strong> (engine x) — высокопроизводительный веб-сервер с открытым исходным кодом, который часто используется для обслуживания статических веб-страниц.</p>
+
+        <div class="callout-box important-box">
+          <strong>Ограничение ответственности (Disclaimer)</strong>
+          <ul>
+            <li>Перед внесением изменений в конфигурацию сервера <strong>обязательно создайте резервную копию</strong> конфигурационного файла.</li>
+            <li>Не используйте эту конфигурацию в production‑среде без консультации с системным администратором.</li>
+            <li>Изменение системных настроек и работа с правами <code>sudo</code> несёт риски: при ошибках можно нарушить работу сервисов или потерять доступ к файлам.</li>
+          </ul>
+        </div>
+
+        <h2 id="предварительные-требования">Предварительные требования</h2>
+        <ul>
+          <li>Установленный <strong>Homebrew</strong>. Если его нет — см. раздел <a href="#1-подготовка-системы-и-установка-homebrew">1</a>.</li>
+          <li>Базовое знание интерфейса командной строки (<strong>Terminal</strong>).</li>
+          <li>Доступ администратора (права <code>sudo</code>) на компьютере.</li>
+          <li>Текстовый редактор (рекомендуется <strong>VS Code</strong>, <strong>TextEdit</strong> или любой другой).</li>
+        </ul>
+        <p>Перед началом работы рекомендуется ознакомиться с документацией:</p>
+        <ul>
+          <li><strong>nginx:</strong>
+            <ul>
+              <li><a href="https://nginx.org/en/docs/">официальная документация</a></li>
+              <li><a href="https://nginx.org/ru/docs/beginners_guide.html">руководство для начинающих</a></li>
+            </ul>
+          </li>
+          <li><strong>Homebrew:</strong> <a href="https://docs.brew.sh/">Homebrew Docs</a></li>
+        </ul>
+
+        <h2 id="системные-требования">Системные требования</h2>
+        <p><strong>nginx</strong> — легковесный веб-сервер, и его минимальные требования крайне невысоки. Ниже представлен минимальный набор для локальной разработки.</p>
+        <table>
+          <thead>
+            <tr>
+              <th>Компонент</th>
+              <th>Требования</th>
+            </tr>
+          </thead>
+          <tbody>
+            <tr><td>macOS</td><td>10.15 (Catalina) или новее</td></tr>
+            <tr><td>Процессор</td><td>Intel (x86_64) или Apple Silicon (ARM64)</td></tr>
+            <tr><td>Homebrew</td><td>3.0.0 или новее</td></tr>
+            <tr><td>Свободное место на диске</td><td>~50 МБ</td></tr>
+            <tr><td>Оперативная память</td><td>от 512 МБ (для комфортной работы с редактором и браузером — от 2 ГБ)</td></tr>
+          </tbody>
+        </table>
+        <div class="callout-box note-box">
+          nginx эффективно работает даже на старых Mac и на виртуальных машинах с 1 ядром.
+        </div>
+
+        <h2 id="полезные-команды">Полезные команды</h2>
+        <p>Ниже представлены базовые команды <strong>nginx</strong>.</p>
+
+        <h3>Управление сервером</h3>
+        <table>
+          <thead>
+            <tr>
+              <th>Команда</th>
+              <th>Описание</th>
+            </tr>
+          </thead>
+          <tbody>
+            <tr><td><code>sudo nginx</code></td><td>Запустить nginx (если не работает через <code>brew services</code>)</td></tr>
+            <tr><td><code>sudo nginx -s stop</code></td><td>Остановить сервер</td></tr>
+            <tr><td><code>sudo nginx -s reload</code></td><td>Перезагрузить конфигурации <em>без</em> остановки сервера</td></tr>
+            <tr><td><code>sudo nginx -s reopen</code></td><td>Переоткрыть лог-файлов</td></tr>
+            <tr><td><code>brew services start nginx</code></td><td>Запустить через Homebrew (фоновый режим)</td></tr>
+            <tr><td><code>brew services restart nginx</code></td><td>Перезапустить через Homebrew</td></tr>
+          </tbody>
+        </table>
+
+        <h3>Проверка конфигурации</h3>
+        <table>
+          <thead>
+            <tr>
+              <th>Команда</th>
+              <th>Описание</th>
+            </tr>
+          </thead>
+          <tbody>
+            <tr><td><code>sudo nginx -t</code></td><td>Проверить синтаксис конфига (обязательно перед <code>reload</code>!)</td></tr>
+            <tr><td><code>sudo nginx -T</code></td><td>Проверить синтаксис + вывести весь конфиг в терминал</td></tr>
+          </tbody>
+        </table>
+
+        <h3>Логи и отладка</h3>
+        <table>
+          <thead>
+            <tr>
+              <th>Команда</th>
+              <th>Описание</th>
+            </tr>
+          </thead>
+          <tbody>
+            <tr><td><code>tail -f /opt/homebrew/var/log/nginx/access.log</code></td><td>Просмотреть логи доступа в реальном времени</td></tr>
+            <tr><td><code>tail -f /opt/homebrew/var/log/nginx/error.log</code></td><td>Просмотреть ошибки в реальном времени</td></tr>
+            <tr><td><code>sudo lsof -i :80</code></td><td>Проверить, какой процесс использует порт 80</td></tr>
+          </tbody>
+        </table>
+
+        <h3>Работа с файлами</h3>
+        <table>
+          <thead>
+            <tr>
+              <th>Команда</th>
+              <th>Описание</th>
+            </tr>
+          </thead>
+          <tbody>
+            <tr><td><code>sudo code /opt/homebrew/etc/nginx/nginx.conf</code></td><td>Открыть конфиг в VS Code</td></tr>
+            <tr><td><code>sudo cp nginx.conf nginx.conf.backup</code></td><td>Создать резервную копию конфига</td></tr>
+            <tr><td><code>sudo diff nginx.conf nginx.conf.backup</code></td><td>Сравнить текущий конфиг с резервной копией</td></tr>
+          </tbody>
+        </table>
+
+        <div class="callout-box note-box">
+          Эти команды решают повседневные задачи. Для продвинутых сценариев (например, настройка SSL, балансировки нагрузки) см. <a href="https://nginx.org/en/docs/">официальную документацию nginx</a>.
+        </div>
+
+        <h2 id="1-подготовка-системы-и-установка-homebrew">1. Подготовка системы и установка Homebrew</h2>
+        <p><strong>Homebrew</strong> — утилита командной строки для установки пакетов и приложений в macOS.</p>
+        <p>Если Homebrew ещё не установлен:</p>
+        <ol>
+          <li>Откройте <strong>Терминал</strong> и вставьте команду c официального сайта <a href="https://brew.sh/ru/">brew.sh</a>:
+            <pre><code>/bin/bash -c "$(curl -fsSL https://raw.githubusercontent.com/Homebrew/install/HEAD/install.sh)"</code></pre>
+          </li>
+          <li>Введите пароль администратора для подтверждения (ввод пароля <em>не</em> отображается).</li>
+        </ol>
+
+        <div class="callout-box important-box">
+          Во время установки Homebrew запрашивается пароль администратора (sudo), так как требуются права <code>root</code> для установки в системные директории. Вводите пароль только при уверенности в источнике скрипта.
+        </div>
+
+        <ol start="3">
+          <li>Нажмите <strong>Return</strong> и дождитесь завершения установки (может занять несколько минут). Появится строка <code>Installation successful</code>!</li>
+          <li>Убедитесь в корректности установки через команду проверки версии:
+            <pre><code>brew --version</code></pre>
+          </li>
+        </ol>
+
+        <h2 id="2-установка-и-запуск-nginx">2. Установка и запуск nginx</h2>
+        <p>Чтобы установить <strong>nginx</strong> с помощью <strong>Homebrew</strong>:</p>
+        <ol>
+          <li>Откройте <strong>Терминал</strong> и введите команду:
+            <pre><code>brew install nginx</code></pre>
+          </li>
+          <li>Дождитесь завершения. Homebrew автоматически установит все зависимости.</li>
+          <li>Запустите сервер:
+            <pre><code>brew services start nginx</code></pre>
+          </li>
+          <li>Проверьте статус (должно быть <code>started</code>):
+            <pre><code>brew services list</code></pre>
+          </li>
+          <li>Для проверки работоспособности перейдите по адресу в браузере: <code>http://localhost:8080/</code>.</li>
+        </ol>
+
+        <div class="callout-box note-box">
+          Порт <code
