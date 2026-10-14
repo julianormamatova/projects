@@ -361,8 +361,8 @@ sudo cp /opt/homebrew/etc/nginx/nginx.conf.backup /opt/homebrew/etc/nginx/nginx.
 **Решение:**
 
 1. Проверить кодировку HTML-файла:
-    - Открыть `index.html` в **VS Code**
-    - В правом нижнем углу кликнуть на кодировку (должно быть: **UTF-8**).
-    - Если указана другая, то нажать **Save with Encoding** → **UTF-8**.
+    - открыть `index.html` в **VS Code**;
+    - в правом нижнем углу кликнуть на кодировку (должно быть: **UTF-8**);
+    - если указана другая, то нажать **Save with Encoding** → **UTF-8**.
 
 2. Проверить наличие мета-тега **<mеta charset="UTF-8">** в **<hеad>**.
